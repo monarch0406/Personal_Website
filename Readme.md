@@ -6,9 +6,13 @@
 
 建置一個全端的個人作品展示網站，內容包含：
 
-- **關於我 (About)**
-- **作品集 (Portfolio)**
+- **首頁**
+- **個人介紹 (About)**
+- **技能 (Skills)**
+- **工作經驗 (Experiment)**
+- **專案介紹 (Projects)**
 - **獎項 (Award)**
+- **其他 (Others)**
 
 透過 RESTful API 串接，實現前後端分離的開發流程。
 
@@ -58,6 +62,12 @@
 | Tailwind CSS       | 4.1.4     |
 
 ---
+## 頁面展示
+### 首頁 (Home):
+![Home.png](ResultPhoto/0423/Home.png)
+
+---
+
 
 ## 專案結構
 
