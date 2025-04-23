@@ -1,26 +1,19 @@
-// App.jsx
-import { useEffect, useState } from 'react';
-import TailwindTest from './TailwindTest';   // ① 引入
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import Home   from './pages/Home';
 
-function App() {
-  const [msg, setMsg] = useState('Loading...');
-
-  useEffect(() => {
-    fetch('/api/hello')
-      .then(res => res.text())
-      .then(txt => setMsg(txt))
-      .catch(err => setMsg('Error: ' + err.message));
-  }, []);
-
+export default function App() {
   return (
-    <>                                        {/* ② 用 Fragment 包起來 */}
-      <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-        <h1>{msg}</h1>
-      </div>
-      <TailwindTest />                        {/* ③ 在這裡渲染 */}
-    </>
+    <BrowserRouter>
+      <NavBar />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+
+    </BrowserRouter>
   );
 }
 
-export default App;
 

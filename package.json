@@ -2,9 +2,12 @@
   "devDependencies": {
     "concurrently": "^9.1.2"
   },
-"scripts": {
-  "start:backend": "cd backend/demo && mvnw.cmd spring-boot:run",
-  "start:frontend": "cd frontend && npm run dev",
-  "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
-}
+  "scripts": {
+    "start:backend": "cd backend/demo && mvnw.cmd spring-boot:run",
+    "start:frontend": "cd frontend && npm run dev",
+    "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+  },
+  "dependencies": {
+    "react-icons": "^5.5.0"
+  }
 }

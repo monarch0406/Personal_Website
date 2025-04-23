@@ -300,5 +300,23 @@ personal-site/
 
 7. **測試**：執行`npm run start:all`，然後到瀏覽器(http://localhost:3000)去確認是否有出現「Hello,bro」以及「紅框白字的 Tailwind 已正確安裝！」
 
+### 2025/04/23 (三)
+#### 1. 安裝 react-router
+```
+cd frontend
+npm install react-router-dom@6
+```
+設定 `app.jsx`
+
+#### 2. 建置`components`中的`Navbar`
+導覽列:能夠隨頁面往下時跟著往下
+![Navbar.png](ResultPhoto/0423/Navbar.png)
+
+#### 3. 建置 `pages`中的`Home.jsx`
+首頁的Carousel功能，可以左右切換
+![Home.png](ResultPhoto/0423/Home.png)
+
+
+
 
 
