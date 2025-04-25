@@ -358,6 +358,7 @@ npm install react-router-dom@6
 
 #### 5. 微調前端
 設定視窗背景等...
+![Skill.png](ResultPhoto/0426/Skill.jpg)
 
 
 
