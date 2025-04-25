@@ -66,6 +66,19 @@
 ### 首頁 (Home):
 ![Home.png](ResultPhoto/0423/Home.png)
 
+### 技能 (Skill):
+技能頁面
+![Skill.png](ResultPhoto/0426/Skill.jpg)
+新增技能 (Create) 功能視窗
+![AddSkill.png](ResultPhoto/0426/AddSkill.jpg)
+新增欄位按鈕
+![ChangeSkill.png](ResultPhoto/0426/AddColumn.jpg)
+修改 (Update) 功能視窗
+![ChangeSkill.png](ResultPhoto/0426/ChangeSkill.jpg)
+刪除技能、欄位 (Delete) 功能視窗
+![DeleteSkill.png](ResultPhoto/0426/DeleteSkill.jpg)
+
+
 ---
 
 
@@ -326,6 +339,25 @@ npm install react-router-dom@6
 首頁的Carousel功能，可以左右切換
 ![Home.png](ResultPhoto/0423/Home.png)
 
+### 2025/04/26 (六)
+#### 1. Skill 前端頁面設計
+預想功能 : 
+- 新增欄位(如:程式設計)
+- 欄位內可以新增技能 (如:Python)
+- 可以修改及刪除欄位、技能
+- 利用視窗處理
+
+#### 2. 進行 PostgreSQL 資料庫建置
+建置 + Postman 測試
+
+#### 3. 進行後端 CRUD 功能設計
+分為兩部分 : Category(欄位)、Skill(功能)
+並利用 JPA + Hibernate 管理資料庫
+
+#### 4. 將前後端以 Restful API 串接起來
+
+#### 5. 微調前端
+設定視窗背景等...
 
 
 
