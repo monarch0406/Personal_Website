@@ -65,6 +65,7 @@
 ## 頁面展示
 ### 首頁 (Home):
 ![Home.png](ResultPhoto/0423/Home.png)
+![HomePage_Introduction.png](ResultPhoto/0502/Home_Introduction.jpg)
 
 ### 技能 (Skill):
 技能頁面
@@ -360,6 +361,10 @@ npm install react-router-dom@6
 設定視窗背景等...
 ![Skill.png](ResultPhoto/0426/Skill.jpg)
 
-
-
+### 2025/05/02 (五)
+#### 1. 首頁新增簡單個人介紹部分
+1. 左邊文字說明、右邊圖片設計
+2. 歡迎字體從左到右動畫特效 (安裝`npm framer-motion`)
+3. Read more 的 Hover 反白效果
+![HomePage_Introduction.png](ResultPhoto/0502/Home_Introduction.jpg)
 

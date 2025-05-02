@@ -8,7 +8,7 @@ export default function NavBar() {
     { cn: '技能',     en: 'Skills',      to: 'skill' },
     { cn: '工作經驗', en: 'Experience',  to: '#experience' },
     { cn: '專案介紹', en: 'Projects',    to: '#projects' },
-    { cn: '獎項',     en: 'Awards',      to: '#awards' },
+    { cn: '證照&獎項',     en: 'Awards',      to: '#awards' },
     { cn: '其他',     en: 'Others',      to: '#others' },
   ];
 

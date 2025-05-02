@@ -8,7 +8,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <NavBar />
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/skill" element={<Skill />} />
@@ -17,5 +16,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-
-

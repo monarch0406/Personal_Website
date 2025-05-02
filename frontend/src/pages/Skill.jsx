@@ -259,7 +259,7 @@ export default function SkillsPage() {
           style={{
             backgroundImage: 
               // 第一層：深黑漸層；第二層：你的圖片
-              "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image4.jpg')",
+              "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image2.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
