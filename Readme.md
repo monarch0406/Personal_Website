@@ -66,6 +66,7 @@
 ### 首頁 (Home):
 ![Home.png](ResultPhoto/0423/Home.png)
 ![HomePage_Introduction.png](ResultPhoto/0502/Home_Introduction.jpg)
+![HomePage_Introduction.png](ResultPhoto/0504/Homepage_Skill.jpg)
 
 ### 技能 (Skill):
 技能頁面
@@ -368,3 +369,15 @@ npm install react-router-dom@6
 3. Read more 的 Hover 反白效果
 ![HomePage_Introduction.png](ResultPhoto/0502/Home_Introduction.jpg)
 
+
+### 2025/05/04 (日)
+#### 1. 首頁新增技能卡片區域
+1. 設計能夠取得技能欄位名稱與技能
+2. 設計卡片顯示方式，固定出現四個卡片，並且固定大小會出現4個技能
+3. 設計按鈕可以循環式觀看
+4. 會隨著技能頁面而有所變化
+5. 查看技能按鈕會導覽至技能頁面
+![HomePage_Introduction.png](ResultPhoto/0504/Homepage_Skill.jpg)
+
+#### 2. 稍微改寫首頁自我介紹區域
+1. 改成圖片在直接定位在最右邊
