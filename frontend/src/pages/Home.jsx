@@ -97,7 +97,7 @@ export default function Home() {
         在大學及研究所期間，修習過多門資訊課程，如物件導向 Java、程式設計、資料庫管理、網頁程式設計、計算機概論、網路概論、計算機組織、資訊安全技術、資料探勘研究與實務、分散式系統等...
       </p>
       <Link
-        to="/skill"
+        to="/introduction"
         className="self-start !bg-black !text-white !font-bold px-6 py-2 rounded-lg 
         transition-colors duration-200 ease-out 
         hover:!bg-white hover:!text-black hover:shadow-lg"

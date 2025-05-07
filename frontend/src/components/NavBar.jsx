@@ -4,7 +4,7 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 export default function NavBar() {
   const menu = [
-    { cn: '個人介紹', en: 'About Me',    to: '#about' },
+    { cn: '個人介紹', en: 'About Me',    to: 'introduction' },
     { cn: '技能',     en: 'Skills',      to: 'skill' },
     { cn: '工作經驗', en: 'Experience',  to: '#experience' },
     { cn: '專案介紹', en: 'Projects',    to: '#projects' },

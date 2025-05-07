@@ -68,6 +68,13 @@
 ![HomePage_Introduction.png](ResultPhoto/0502/Home_Introduction.jpg)
 ![HomePage_Introduction.png](ResultPhoto/0504/Homepage_Skill.jpg)
 
+### 個人介紹 (About me):
+個人介紹頁面
+![About_me.png](ResultPhoto/0508/About_me.jpg)
+![About_me_2.png](ResultPhoto/0508/About_me_2.jpg)
+新增學歷功能
+![Create_Education2.png](ResultPhoto/0508/create_education.jpg)
+
 ### 技能 (Skill):
 技能頁面
 ![Skill.png](ResultPhoto/0426/Skill.jpg)
@@ -381,3 +388,19 @@ npm install react-router-dom@6
 
 #### 2. 稍微改寫首頁自我介紹區域
 1. 改成圖片在直接定位在最右邊
+
+### 2025/05/08 (四)
+#### 1. 完成個人介紹頁面
+其中包括 :
+- 左邊的一個大頭貼
+- 右邊的姓名、學歷、自傳
+- 學歷的新增、修改、刪除功能
+- 自傳的編輯功能
+- 自傳看更多
+![About_me.png](ResultPhoto/0508/About_me.jpg)
+![About_me_2.png](ResultPhoto/0508/About_me_2.jpg)
+
+#### 2. 完成 AOP 功能
+可以看用了什麼功能、參數等
+![AOP.png](ResultPhoto/0508/AOP.jpg)
+
