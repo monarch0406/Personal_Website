@@ -67,6 +67,7 @@
 ![Home.png](ResultPhoto/0423/Home.png)
 ![HomePage_Introduction.png](ResultPhoto/0502/Home_Introduction.jpg)
 ![HomePage_Introduction.png](ResultPhoto/0504/Homepage_Skill.jpg)
+![Homepage_Project.png](ResultPhoto/0509/Homepage_Project.jpg.jpg)
 
 ### 個人介紹 (About me):
 個人介紹頁面
@@ -87,7 +88,13 @@
 刪除技能、欄位 (Delete) 功能視窗
 ![DeleteSkill.png](ResultPhoto/0426/DeleteSkill.jpg)
 
+### 專案 (Project):
+專案頁面
 
+新增、修改專案 (Create) 功能視窗
+![Update_Project.png](ResultPhoto/0509/Update_Project.jpg)
+刪除專案 (Delete) 功能視窗
+![Delete_Project.png](ResultPhoto/0509/Delete_Project.jpg)
 ---
 
 
@@ -405,3 +412,16 @@ npm install react-router-dom@6
 
 ![AOP.png](ResultPhoto/0508/AOP.jpg)
 
+### 2025/05/09
+#### 1. 完成專案頁面
+
+其中包括 :
+- 新增專案
+- 可以新增專案名稱、說明、技術、連結、圖片等
+- 修改專案
+![Update_Project.png](ResultPhoto/0509/Update_Project.jpg)
+- 刪除專案
+![Delete_Project.png](ResultPhoto/0509/Delete_Project.jpg)
+
+#### 2. 新增首頁專案部分
+![Homepage_Project.png](ResultPhoto/0509/Homepage_Project.jpg.jpg)

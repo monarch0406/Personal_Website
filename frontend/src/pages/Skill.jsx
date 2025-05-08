@@ -27,6 +27,9 @@ export default function SkillsPage() {
   const [delCatModalOpen, setDelCatModalOpen] = useState(false);
   const [delCatId, setDelCatId] = useState(null);
 
+  // Modal Animation
+  const [modalAnimationClass, setModalAnimationClass] = useState("");
+
   // Fetch all categories on mount
   useEffect(() => {
     fetchCategories();
@@ -65,7 +68,7 @@ export default function SkillsPage() {
   async function deleteCategory() {
     await fetch(`http://localhost:8080/api/categories/${delCatId}`, { method: 'DELETE' });
     setCategories(categories.filter(cat => cat.id !== delCatId));
-    closeAllModals();
+    closeModalWithAnimation();
   }
 
   // Item CRUD
@@ -83,7 +86,7 @@ export default function SkillsPage() {
           : cat
       )
     );
-    closeAllModals();
+    closeModalWithAnimation();
   }
 
   async function updateItem() {
@@ -102,7 +105,7 @@ export default function SkillsPage() {
         return { ...c, items };
       })
     );
-    closeAllModals();
+    closeModalWithAnimation();
   }
 
   async function deleteItem() {
@@ -116,33 +119,67 @@ export default function SkillsPage() {
           : c
       )
     );
-    closeAllModals();
+    closeModalWithAnimation();
   }
+
+  // 開啟視窗時添加動畫效果
+  const openModalWithAnimation = (modalFunction) => {
+    // 先設置為縮小狀態
+    setModalAnimationClass("scale-95 opacity-0");
+    // 執行模態視窗打開功能
+    modalFunction();
+    // 短暫延遲後設置為正常大小，產生放大動畫
+    setTimeout(() => {
+      setModalAnimationClass("scale-100 opacity-100");
+    }, 10);
+  };
+
+  // 關閉視窗時添加動畫效果
+  const closeModalWithAnimation = () => {
+    // 設置為縮小狀態，產生縮小動畫
+    setModalAnimationClass("scale-95 opacity-0");
+    // 動畫結束後關閉視窗
+    setTimeout(() => {
+      closeAllModals();
+    }, 200);
+  };
 
   // Modal handlers
   function openAddModal(catId) {
-    setModalCatId(catId);
-    setTempName('');
-    setTempDesc('');
-    setAddModalOpen(true);
+    openModalWithAnimation(() => {
+      setModalCatId(catId);
+      setTempName('');
+      setTempDesc('');
+      setAddModalOpen(true);
+    });
   }
+  
   function openEditModal(catId, idx) {
-    const it = categories.find(c => c.id === catId).items[idx];
-    setEditCatId(catId);
-    setEditIndex(idx);
-    setEditName(it.name);
-    setEditDesc(it.desc);
-    setEditModalOpen(true);
+    openModalWithAnimation(() => {
+      const it = categories.find(c => c.id === catId).items[idx];
+      setEditCatId(catId);
+      setEditIndex(idx);
+      setEditName(it.name);
+      setEditDesc(it.desc);
+      setEditModalOpen(true);
+    });
   }
+  
   function openDelItemModal(catId, idx) {
-    setDelItemCatId(catId);
-    setDelItemIndex(idx);
-    setDelItemModalOpen(true);
+    openModalWithAnimation(() => {
+      setDelItemCatId(catId);
+      setDelItemIndex(idx);
+      setDelItemModalOpen(true);
+    });
   }
+  
   function openDeleteCategoryModal(catId) {
-    setDelCatId(catId);
-    setDelCatModalOpen(true);
+    openModalWithAnimation(() => {
+      setDelCatId(catId);
+      setDelCatModalOpen(true);
+    });
   }
+  
   function closeAllModals() {
     setAddModalOpen(false);
     setEditModalOpen(false);
@@ -151,88 +188,106 @@ export default function SkillsPage() {
   }
 
   return (
-    <div className="w-screen h-screen bg-gray-50 overflow-auto flex flex-col p-8">
+    <div className="w-screen min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 overflow-auto flex flex-col">
       {/* Header */}
-      <header className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-gray-800">技能</h1>
-        <p className="text-xl text-gray-600 mt-2">Skills</p>
+      <header className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-center py-12 shadow-md mb-8">
+        <h1 className="text-4xl font-bold text-white">技能</h1>
+        <p className="text-blue-100 mt-2">Skills</p>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow space-y-8">
-        {categories.map(cat => (
-          <section key={cat.id} className="bg-white rounded-lg shadow p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-semibold text-gray-800">{cat.name}</h2>
-              <div className="space-x-2">
-                <button onClick={() => openAddModal(cat.id)} className="!bg-blue-500 !text-white hover:!bg-blue-600 px-3 py-1 rounded-lg shadow transition">
-                  新增項目
-                </button>
-                <button onClick={() => openDeleteCategoryModal(cat.id)} className="!bg-red-500 !text-white hover:!bg-red-600 px-3 py-1 rounded-lg shadow transition">
-                  刪除欄位
-                </button>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              {cat.items.map((item, idx) => (
-                <div key={item.id} className="bg-gray-100 border border-gray-300 rounded-lg p-4 flex items-center justify-between">
-                  <div className="flex-1 grid grid-cols-[120px_minmax(0,1fr)] gap-4 items-center">
-                    <span className="text-xl font-extrabold text-gray-900">
-                      {item.name}
-                    </span>
-                    <span className="text-gray-700">{item.desc}</span>
-                  </div>
-                  <div className="space-x-2">
-                    <button onClick={() => openEditModal(cat.id, idx)} className="!bg-green-400 !text-white hover:!bg-green-500 px-2 py-1 rounded transition">
-                      修改
-                    </button>
-                    <button onClick={() => openDelItemModal(cat.id, idx)} className="!bg-red-500 !text-white hover:!bg-red-600 px-2 py-1 rounded transition">
-                      刪除
-                    </button>
-                  </div>
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <div className="space-y-8">
+          {categories.map(cat => (
+            <section key={cat.id} className="bg-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <div className="flex flex-wrap justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold text-gray-800">{cat.name}</h2>
+                <div className="space-x-2 mt-2 sm:mt-0">
+                  <button onClick={() => openAddModal(cat.id)} className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 px-3 py-1.5 rounded-lg shadow transition duration-300 !font-bold">
+                    新增項目
+                  </button>
+                  <button onClick={() => openDeleteCategoryModal(cat.id)} className="bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700 px-3 py-1.5 rounded-lg shadow transition duration-300 !font-bold">
+                    刪除欄位
+                  </button>
                 </div>
-              ))}
+              </div>
+
+              <div className="space-y-4">
+                {cat.items.map((item, idx) => (
+                  <div key={item.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 flex flex-wrap md:flex-nowrap items-center justify-between transition-all duration-300 hover:bg-white hover:shadow">
+                    <div className="flex-1 grid grid-cols-1 md:grid-cols-[120px_minmax(0,1fr)] gap-2 md:gap-4 items-center mb-3 md:mb-0">
+                      <span className="text-xl !font-bold text-gray-900">
+                        {item.name}
+                      </span>
+                      <span className="text-gray-700">{item.desc}</span>
+                    </div>
+                    <div className="flex space-x-2 w-full md:w-auto">
+                      <button onClick={() => openEditModal(cat.id, idx)} className="bg-gradient-to-r from-emerald-400 to-teal-500 text-white hover:from-emerald-500 hover:to-teal-600 px-3 py-1.5 rounded-lg transition duration-300 flex-1 md:flex-initial !font-bold">
+                        修改
+                      </button>
+                      <button onClick={() => openDelItemModal(cat.id, idx)} className="bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700 px-3 py-1.5 rounded-lg transition duration-300 flex-1 md:flex-initial !font-bold">
+                        刪除
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {cat.items.length === 0 && (
+                  <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+                    <p className="text-gray-500">尚未新增任何項目</p>
+                  </div>
+                )}
+              </div>
+            </section>
+          ))}
+          
+          {/* Footer: 新增欄位 */}
+          <div className="bg-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">新增欄位</h2>
+            <div className="flex flex-col sm:flex-row">
+              <input
+                type="text"
+                placeholder="新增欄位名稱，例如「資料庫」"
+                value={newCategoryName}
+                onChange={e => setNewCategoryName(e.target.value)}
+                className="flex-1 border border-gray-300 rounded-lg sm:rounded-r-none px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <button 
+                onClick={addCategory} 
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 px-6 py-2 rounded-lg sm:rounded-l-none shadow transition duration-300 mt-2 sm:mt-0 !font-bold"
+              >
+                新增欄位
+              </button>
             </div>
-          </section>
-        ))}
-        {/* Footer: 新增欄位 */}
-          <div className="flex max-w-lg mx-auto">
-            <input
-              type="text"
-              placeholder="新增欄位名稱，例如「資料庫」"
-              value={newCategoryName}
-              onChange={e => setNewCategoryName(e.target.value)}
-              className="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 text-gray-800 focus:outline-none"
-            />
-            <button onClick={addCategory} className="!bg-blue-500 !text-white hover:!bg-blue-600 px-4 py-2 rounded-r-lg transition">
-              新增欄位
-            </button>
           </div>
-        </main>
+        </div>
+      </main>
 
       {/* Add Item Modal */}
       {addModalOpen && (
-          <div
-          className="fixed inset-0 flex items-center justify-center"
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
           style={{
             backgroundImage: 
-              // 第一層：深黑漸層；第二層：你的圖片
               "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image3.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-          }}          
+            backdropFilter: 'blur(5px)'
+          }}
+          onClick={() => closeModalWithAnimation()}
+        >
+          <div 
+            className={`bg-white rounded-xl shadow-2xl p-6 w-full max-w-md transform transition-all duration-300 ${modalAnimationClass}`}
+            onClick={e => e.stopPropagation()}
           >
-          <div className="bg-white rounded-lg p-6 w-full max-w-sm">
-            <h3 className="text-2xl font-semibold mb-4 text-gray-800 text-center">新增項目</h3>
+            <h3 className="text-2xl font-semibold mb-4 text-gray-800 text-center !font-bold">新增項目</h3>
             <div className="mb-4">
               <label className="block mb-2 text-gray-700 font-medium">技能名稱</label>
               <input
                 type="text"
                 value={tempName}
                 onChange={e => setTempName(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none text-gray-800"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
               />
             </div>
             <div className="mb-4">
@@ -241,12 +296,16 @@ export default function SkillsPage() {
                 type="text"
                 value={tempDesc}
                 onChange={e => setTempDesc(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none text-gray-800"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
               />
             </div>
-            <div className="flex justify-center space-x-4 mt-4">
-              <button onClick={closeAllModals} className="!bg-gray-500 !text-white hover:!bg-gray-600 px-4 py-2 rounded-lg transition">取消</button>
-              <button onClick={() => addItem(modalCatId, tempName.trim(), tempDesc.trim())} className="!bg-blue-500 !text-white hover:!bg-blue-600 px-4 py-2 rounded-lg transition">確認</button>
+            <div className="flex justify-center space-x-4 mt-6">
+              <button onClick={() => closeModalWithAnimation()} className="bg-gradient-to-r from-gray-500 to-gray-700 text-white hover:from-gray-600 hover:to-gray-800 px-5 py-2 rounded-lg shadow transition duration-300 !font-bold">取消</button>
+              <button 
+                onClick={() => addItem(modalCatId, tempName.trim(), tempDesc.trim())} 
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 px-5 py-2 rounded-lg shadow transition duration-300 !font-bold"
+                disabled={!tempName.trim()}
+              >確認</button>
             </div>
           </div>
         </div>
@@ -254,18 +313,22 @@ export default function SkillsPage() {
 
       {/* Edit Item Modal */}
       {editModalOpen && (
-          <div
-          className="fixed inset-0 flex items-center justify-center"
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
           style={{
             backgroundImage: 
-              // 第一層：深黑漸層；第二層：你的圖片
               "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image2.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-          }}          
+            backdropFilter: 'blur(5px)'
+          }}
+          onClick={() => closeModalWithAnimation()}
+        >
+          <div 
+            className={`bg-white rounded-xl shadow-2xl p-6 w-full max-w-md transform transition-all duration-300 ${modalAnimationClass}`}
+            onClick={e => e.stopPropagation()}
           >
-          <div className="bg-white rounded-lg p-6 w-full max-w-sm">
             <h3 className="text-2xl font-semibold mb-4 text-gray-800 text-center">修改項目</h3>
             <div className="mb-4">
               <label className="block mb-2 text-gray-700 font-medium">技能名稱</label>
@@ -273,7 +336,7 @@ export default function SkillsPage() {
                 type="text"
                 value={editName}
                 onChange={e => setEditName(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none text-gray-800"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
               />
             </div>
             <div className="mb-4">
@@ -282,12 +345,16 @@ export default function SkillsPage() {
                 type="text"
                 value={editDesc}
                 onChange={e => setEditDesc(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none text-gray-800"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
               />
             </div>
-            <div className="flex justify-center space-x-4 mt-4">
-              <button onClick={closeAllModals} className="!bg-gray-500 !text-white hover:!bg-gray-600 px-4 py-2 rounded-lg transition">取消</button>
-              <button onClick={updateItem} className="!bg-blue-500 !text-white hover:!bg-blue-600 px-4 py-2 rounded-lg transition">確認</button>
+            <div className="flex justify-center space-x-4 mt-6">
+              <button onClick={() => closeModalWithAnimation()} className="bg-gradient-to-r from-gray-500 to-gray-700 text-white hover:from-gray-600 hover:to-gray-800 px-5 py-2 rounded-lg shadow transition duration-300 !font-bold">取消</button>
+              <button 
+                onClick={updateItem} 
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 px-5 py-2 rounded-lg shadow transition duration-300 !font-bold"
+                disabled={!editName.trim()}
+              >確認</button>
             </div>
           </div>
         </div>
@@ -295,23 +362,32 @@ export default function SkillsPage() {
 
       {/* Delete Item Modal */}
       {delItemModalOpen && (
-          <div
-          className="fixed inset-0 flex items-center justify-center"
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
           style={{
             backgroundImage: 
-              // 第一層：深黑漸層；第二層：你的圖片
               "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image1.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-          }}          
+            backdropFilter: 'blur(5px)'
+          }}
+          onClick={() => closeModalWithAnimation()}
+        >
+          <div 
+            className={`bg-white rounded-xl shadow-2xl p-6 w-full max-w-md transform transition-all duration-300 ${modalAnimationClass}`}
+            onClick={e => e.stopPropagation()}
           >
-          <div className="bg-white rounded-lg p-6 w-full max-w-sm">
+            <div className="flex items-center text-red-600 mb-4 justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
             <h3 className="text-2xl font-semibold mb-4 text-gray-800 text-center">刪除項目</h3>
-            <p className="text-center text-gray-700 mb-4">確定要刪除此項目嗎？</p>
+            <p className="text-center text-gray-700 mb-6">確定要刪除此項目嗎？此操作無法撤銷。</p>
             <div className="flex justify-center space-x-4 mt-4">
-              <button onClick={closeAllModals} className="!bg-gray-500 !text-white hover:!bg-gray-600 px-4 py-2 rounded-lg transition">取消</button>
-              <button onClick={deleteItem} className="!bg-red-500 !text-white hover:!bg-red-600 px-4 py-2 rounded-lg transition">刪除</button>
+              <button onClick={() => closeModalWithAnimation()} className="bg-gradient-to-r from-gray-500 to-gray-700 text-white hover:from-gray-600 hover:to-gray-800 px-5 py-2 rounded-lg shadow transition duration-300 !font-bold">取消</button>
+              <button onClick={deleteItem} className="bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700 px-5 py-2 rounded-lg shadow transition duration-300 !font-bold">刪除</button>
             </div>
           </div>
         </div>
@@ -319,23 +395,32 @@ export default function SkillsPage() {
 
       {/* Delete Category Modal */}
       {delCatModalOpen && (
-          <div
-          className="fixed inset-0 flex items-center justify-center"
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
           style={{
             backgroundImage: 
-              // 第一層：深黑漸層；第二層：你的圖片
               "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image1.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-          }}          
+            backdropFilter: 'blur(5px)'
+          }}
+          onClick={() => closeModalWithAnimation()}
+        >
+          <div 
+            className={`bg-white rounded-xl shadow-2xl p-6 w-full max-w-md transform transition-all duration-300 ${modalAnimationClass}`}
+            onClick={e => e.stopPropagation()}
           >
-          <div className="bg-white rounded-lg p-6 w-full max-w-sm">
+            <div className="flex items-center text-red-600 mb-4 justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
             <h3 className="text-2xl font-semibold mb-4 text-gray-800 text-center">刪除欄位</h3>
-            <p className="text-center text-gray-700 mb-4">確定要刪除此欄位嗎？</p>
+            <p className="text-center text-gray-700 mb-6">確定要刪除此欄位嗎？此操作無法撤銷。</p>
             <div className="flex justify-center space-x-4 mt-4">
-              <button onClick={closeAllModals} className="!bg-gray-500 !text-white hover:!bg-gray-600 px-4 py-2 rounded-lg transition">取消</button>
-              <button onClick={deleteCategory} className="!bg-red-500 !text-white hover:!bg-red-600 px-4 py-2 rounded-lg transition">刪除</button>
+              <button onClick={() => closeModalWithAnimation()} className="bg-gradient-to-r from-gray-500 to-gray-700 text-white hover:from-gray-600 hover:to-gray-800 px-5 py-2 rounded-lg shadow transition duration-300 !font-bold">取消</button>
+              <button onClick={deleteCategory} className="bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700 px-5 py-2 rounded-lg shadow transition duration-300 !font-bold">刪除</button>
             </div>
           </div>
         </div>

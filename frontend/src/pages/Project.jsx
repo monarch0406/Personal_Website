@@ -17,6 +17,16 @@ export default function ProjectShowcase() {
   const [techInput, setTechInput] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [modalAnimationClass, setModalAnimationClass] = useState("");
+  // 新增一個狀態來跟踪哪些專案的描述被展開
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  // 切換描述的展開/收合狀態
+  const toggleDescription = (projectId) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [projectId]: !prev[projectId]
+    }));
+  };
 
   // 讀取後端專案列表
   useEffect(() => {
@@ -231,7 +241,36 @@ export default function ProjectShowcase() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <p className="text-gray-700 mb-5 line-clamp-3 min-h-[4.5rem]">{project.description}</p>
+                  {/* 修改描述區塊，添加展開/收合功能 */}
+                  <div className="mb-5">
+                    <p className={`text-gray-700 ${expandedDescriptions[project.id] ? "" : "line-clamp-3"}`}>
+                      {project.description}
+                    </p>
+                    {project.description && (
+                      <div className="mt-2">
+                        <span 
+                          onClick={() => toggleDescription(project.id)}
+                          className="text-indigo-600 hover:text-indigo-800 cursor-pointer text-sm flex items-center"
+                        >
+                          {expandedDescriptions[project.id] ? (
+                            <>
+                              收合
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+                              </svg>
+                            </>
+                          ) : (
+                            <>
+                              更多
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                              </svg>
+                            </>
+                          )}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.technologies.map((tech, index) => 
                       renderTechTag(tech, index)
@@ -240,25 +279,44 @@ export default function ProjectShowcase() {
                       <span className="text-gray-400 text-sm italic">未指定技術</span>
                     )}
                   </div>
-                  <div className="flex justify-end space-x-3">
-                    <button
-                      onClick={() => openEditModal(project)}
-                      className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg shadow-md hover:from-emerald-600 hover:to-teal-700 transition duration-300 ease-in-out text-sm font-medium flex items-center"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                      </svg>
-                      修改
-                    </button>
-                    <button
-                      onClick={() => openDeleteModal(project)}
-                      className="px-4 py-2 bg-gradient-to-r from-rose-500 to-red-600 text-white rounded-lg shadow-md hover:from-rose-600 hover:to-red-700 transition duration-300 ease-in-out text-sm font-medium flex items-center"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                      刪除
-                    </button>
+                  <div className="flex justify-between items-center">
+                    {/* 新增專案連結按鈕 */}
+                    {project.projectUrl && (
+                      <a
+                        href={project.projectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium transition-colors duration-200"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        專案連結
+                      </a>
+                    )}
+                    {!project.projectUrl && (
+                      <div></div> // 佔位元素，保持按鈕在右側對齊
+                    )}
+                    <div className="flex space-x-3">
+                      <button
+                        onClick={() => openEditModal(project)}
+                        className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg shadow-md hover:from-emerald-600 hover:to-teal-700 transition duration-300 ease-in-out text-sm font-medium flex items-center"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                        修改
+                      </button>
+                      <button
+                        onClick={() => openDeleteModal(project)}
+                        className="px-4 py-2 bg-gradient-to-r from-rose-500 to-red-600 text-white rounded-lg shadow-md hover:from-rose-600 hover:to-red-700 transition duration-300 ease-in-out text-sm font-medium flex items-center"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        刪除
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -386,20 +444,20 @@ export default function ProjectShowcase() {
                         renderTechTag(tech, index, true)
                       )}
                     </div>
-                      {/* 新增：專案網址 */}
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      專案網址
-                    </label>
-                    <input
-                      type="text"
-                      name="projectUrl"
-                      value={currentProject.projectUrl}
-                      onChange={handleInputChange}
-                      placeholder="輸入專案相關 URL"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-900"
-                    />
-                  </div>
+                    {/* 專案網址 */}
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        專案網址
+                      </label>
+                      <input
+                        type="text"
+                        name="projectUrl"
+                        value={currentProject.projectUrl}
+                        onChange={handleInputChange}
+                        placeholder="輸入專案相關 URL"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-900"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">專案圖片 URL</label>
