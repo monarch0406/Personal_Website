@@ -15,8 +15,12 @@ export default function Home() {
   const [idx, setIdx] = useState(0);
   const timerRef = useRef();
   
-  // 新增：滑動方向狀態，用於技能卡片滑動動畫
+  // 滑動方向狀態，用於技能卡片滑動動畫
   const [slideDirection, setSlideDirection] = useState(0); // -1: 向左, 1: 向右, 0: 初始
+  
+  // 新增: 滑鼠懸停狀態
+  const [isCarouselHovered, setIsCarouselHovered] = useState(false);
+  const [isSkillsHovered, setIsSkillsHovered] = useState(false);
 
   // 預載入所有圖片
   const preloadImages = () => {
@@ -39,15 +43,15 @@ export default function Home() {
     return () => window.clearTimeout(timerRef.current);
   }, [idx]);
   
-  // 新增：技能預覽 State
+  // 技能預覽 State
   const [categories, setCategories] = useState([]);
   const [skillIdx, setSkillIdx] = useState(0);
   
-  // 新增：專案預覽 State
+  // 專案預覽 State
   const [featuredProjects, setFeaturedProjects] = useState([]);
   const [isProjectsLoading, setIsProjectsLoading] = useState(true);
 
-  // 新增：抓取 categories + skills
+  // 抓取 categories + skills
   useEffect(() => {
     fetch('http://localhost:8080/api/categories')
       .then(res => res.json())
@@ -61,7 +65,7 @@ export default function Home() {
       });
   }, []);
   
-  // 新增：抓取精選專案
+  // 抓取精選專案
   useEffect(() => {
     setIsProjectsLoading(true);
     fetch('/api/projects')
@@ -147,10 +151,21 @@ export default function Home() {
     };
   };
 
-  // 輪播區塊組件 - 修復閃爍問題
+  // 統一的按鈕樣式 - 改為漸層藍色半透明背景
+  const navButtonStyle = "bg-gradient-to-r from-blue-600/70 to-indigo-700/70 hover:from-blue-700/90 hover:to-indigo-800/90 text-white font-bold p-3 rounded-full shadow-lg z-30 transition-all duration-300 flex items-center justify-center w-10 h-10 backdrop-blur-sm";
+  
+  // 新樣式：按鈕在滑鼠懸停時顯示的樣式
+  const getButtonVisibilityClass = (isVisible) => 
+    isVisible ? "opacity-100 visible" : "opacity-0 invisible";
+
+  // 輪播區塊組件 - 修復閃爍問題並加入hover顯示按鈕效果
   const CarouselSection = () => {
     return (
-      <div className="relative w-full h-[calc(100vh-4rem)] overflow-hidden">
+      <div 
+        className="relative w-full h-[calc(100vh-4rem)] overflow-hidden"
+        onMouseEnter={() => setIsCarouselHovered(true)}
+        onMouseLeave={() => setIsCarouselHovered(false)}
+      >
         {/* 使用一個包含所有圖片的容器，通過絕對定位和透明度來顯示當前圖片 */}
         <div className="relative w-full h-full">
           {slides.map((slide, i) => (
@@ -168,20 +183,20 @@ export default function Home() {
           ))}
         </div>
         
-        {/* 控制按鈕 */}
+        {/* 控制按鈕 - 添加懸停顯示效果 */}
         <button
           onClick={() => {
             window.clearTimeout(timerRef.current);
             setIdx(i => (i - 1 + slides.length) % slides.length);
           }}
-          className="absolute left-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-indigo-700 p-3 rounded-full text-white shadow-lg z-20"
+          className={`absolute left-8 top-1/2 -translate-y-1/2 ${navButtonStyle} ${getButtonVisibilityClass(isCarouselHovered)} transition-opacity duration-300`}
         >‹</button>
         <button
           onClick={() => {
             window.clearTimeout(timerRef.current);
             setIdx(i => (i + 1) % slides.length);
           }}
-          className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-indigo-700 p-3 rounded-full text-white shadow-lg z-20"
+          className={`absolute right-8 top-1/2 -translate-y-1/2 ${navButtonStyle} ${getButtonVisibilityClass(isCarouselHovered)} transition-opacity duration-300`}
         >›</button>
         
         {/* 輪播指示器 */}
@@ -242,7 +257,7 @@ export default function Home() {
             </motion.p>
             <Link
               to="/introduction"
-              className="self-start bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:from-blue-700 hover:to-indigo-800"
+              className="self-start bg-gradient-to-r from-blue-600 to-indigo-700 !text-white font-medium text-base px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:from-blue-700 hover:to-indigo-800 hover:shadow-xl"
             >
               了解更多
             </Link>
@@ -269,20 +284,23 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 技能預覽 區塊 - 確保滿版，添加卡片滑動動畫 */}
-      <div className="py-16 bg-gray-900 relative w-full"          
-            style={{
-                  backgroundImage: 
-                    // 第一層：深黑漸層；第二層：你的圖片
-                    "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url('/images/image9.jpg')",
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  }}          >
+      {/* 技能預覽 區塊 - 確保滿版，添加卡片滑動動畫和懸停顯示按鈕 */}
+      <div 
+        className="py-16 bg-gray-900 relative w-full"          
+        style={{
+            backgroundImage: 
+                "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url('/images/image9.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+        }}
+        onMouseEnter={() => setIsSkillsHovered(true)}
+        onMouseLeave={() => setIsSkillsHovered(false)}
+      >
         {/* 標題區塊 - 保留動畫 */}
         <div className="mb-12 text-center">
           <motion.h1 
-            className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 text-transparent bg-clip-text"
+            className="text-4xl font-bold bg-gradient-to-r text-white bg-clip-text"
             initial={{ y: -30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: false, amount: 0.5 }}
@@ -295,10 +313,10 @@ export default function Home() {
           </p>
         </div>
 
-        {/* ← 左箭頭 - 使用上方定義的 prevSkill 函數 */}
+        {/* ← 左箭頭 - 使用上方定義的 prevSkill 函數 + 懸停時顯示 */}
         <button
           onClick={prevSkill}
-          className="absolute top-1/2 left-4 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-indigo-700 p-3 rounded-full text-white shadow-lg z-30"
+          className={`absolute top-1/2 left-8 -translate-y-1/2 ${navButtonStyle} ${getButtonVisibilityClass(isSkillsHovered)} transition-opacity duration-300`}
         >
           ‹
         </button>
@@ -341,19 +359,19 @@ export default function Home() {
           </AnimatePresence>
         </div>
 
-        {/* → 右箭頭 - 使用上方定義的 nextSkill 函數 */}
+        {/* → 右箭頭 - 使用上方定義的 nextSkill 函數 + 懸停時顯示 */}
         <button
           onClick={nextSkill}
-          className="absolute top-1/2 right-4 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-indigo-700 p-3 rounded-full text-white shadow-lg z-30"
+          className={`absolute top-1/2 right-8 -translate-y-1/2 ${navButtonStyle} ${getButtonVisibilityClass(isSkillsHovered)} transition-opacity duration-300`}
         >
           ›
         </button>
 
-        {/* 查看更多技能 */}
+        {/* 查看更多技能 - 更小巧的漸層藍色按鈕 */}
         <div className="mt-12 text-center">
           <Link
             to="/skill"
-            className="inline-block bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:from-blue-700 hover:to-indigo-800"
+            className="inline-block bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 !text-white !font-bold text-base px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl"
           >
             查看更多技能
           </Link>
@@ -364,7 +382,7 @@ export default function Home() {
       <div className="py-16 w-full"
            style={{
              backgroundImage: 
-               "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image3.jpg')",
+               "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image11.jpg')",
              backgroundSize: 'cover',
              backgroundPosition: 'center',
              backgroundRepeat: 'no-repeat',
@@ -372,17 +390,17 @@ export default function Home() {
            }}>
         {/* 標題區塊 - 調整字體大小與技能區域一致 */}
         <div className="mb-12 text-center">
-          <motion.h2
-            className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 text-transparent bg-clip-text"
+          <motion.h1
+            className="text-4xl font-bold bg-gradient-to-r text-white text-transparent bg-clip-text"
             initial={{ y: -20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            精選專案
-          </motion.h2>
+            專案
+          </motion.h1>
           <p className="mt-2 text-lg font-bold text-gray-300 tracking-widest">
-            Featured Projects
+            Projects
           </p>
         </div>
 
@@ -437,11 +455,11 @@ export default function Home() {
             </div>
           )}
           
-          {/* 查看更多專案 */}
+          {/* 查看更多專案 - 與技能區按鈕保持一致 */}
           <div className="mt-12 text-center">
             <Link
               to="/project"
-              className="inline-block bg-blue-600 hover:bg-blue-800 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg border-2 border-white transition-all duration-300 ease-in-out hover:scale-105"
+              className="inline-block bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 !text-white !font-bold text-base px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl"
             >
               查看所有專案
             </Link>

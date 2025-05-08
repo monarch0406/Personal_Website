@@ -41,6 +41,7 @@ public class ProjectController {
                     existing.setTechnologies(project.getTechnologies());
                     existing.setImageUrl(project.getImageUrl());
                     existing.setYear(project.getYear());
+                    existing.setProjectUrl(project.getProjectUrl());
                     Project updated = projectService.save(existing);
                     return ResponseEntity.ok(updated);
                 })

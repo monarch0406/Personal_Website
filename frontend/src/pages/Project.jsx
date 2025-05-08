@@ -11,7 +11,8 @@ export default function ProjectShowcase() {
     description: "",
     technologies: [],
     imageUrl: "",
-    year: ""
+    year: "",
+    projectUrl: ""
   });
   const [techInput, setTechInput] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -57,9 +58,11 @@ export default function ProjectShowcase() {
   const openModalWithAnimation = (mode, project = null) => {
     setModalMode(mode);
     if (project) {
-      setCurrentProject(mode === "delete" ? project : { ...project });
+      setCurrentProject(mode === "delete" ? project : { ...project,
+               projectUrl: project.projectUrl || ""   // ← 帶入原本的網址 
+               });
     } else {
-      setCurrentProject({ id: null, name: "", description: "", technologies: [], imageUrl: "", year: "" });
+      setCurrentProject({ id: null, name: "", description: "", technologies: [], imageUrl: "", year: "",projectUrl: "" });
     }
     setTechInput("");
     setShowModal(true);
@@ -269,7 +272,7 @@ export default function ProjectShowcase() {
         <div className="fixed inset-0 flex items-center justify-center z-50"
              style={{
                backgroundImage: 
-                 "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image3.jpg')",
+                 "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/image13.jpg')",
                backgroundSize: 'cover',
                backgroundPosition: 'center',
                backgroundRepeat: 'no-repeat',
@@ -383,6 +386,20 @@ export default function ProjectShowcase() {
                         renderTechTag(tech, index, true)
                       )}
                     </div>
+                      {/* 新增：專案網址 */}
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      專案網址
+                    </label>
+                    <input
+                      type="text"
+                      name="projectUrl"
+                      value={currentProject.projectUrl}
+                      onChange={handleInputChange}
+                      placeholder="輸入專案相關 URL"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-900"
+                    />
+                  </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">專案圖片 URL</label>
