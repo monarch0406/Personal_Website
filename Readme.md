@@ -67,7 +67,11 @@
 ![Home.png](ResultPhoto/0423/Home.png)
 ![HomePage_Introduction.png](ResultPhoto/0502/Home_Introduction.jpg)
 ![HomePage_Introduction.png](ResultPhoto/0504/Homepage_Skill.jpg)
-![Homepage_Project.png](ResultPhoto/0509/Homepage_Project.jpg.jpg)
+![Homepage_Work.png](ResultPhoto/0510/Homepage_Work.jpg)
+![Homepage_Project.png](ResultPhoto/0509/Homepage_Project.jpg)
+![Homepage_Award.png](ResultPhoto/0510/Homepage_Award.jpg)
+![Homepage_Other.png](ResultPhoto/0510/Homepage_Other.jpg)
+![Homepage_Footer.png](ResultPhoto/0510/Homepage_Footer.jpg)
 
 ### 個人介紹 (About me):
 個人介紹頁面
@@ -88,15 +92,23 @@
 刪除技能、欄位 (Delete) 功能視窗
 ![DeleteSkill.png](ResultPhoto/0426/DeleteSkill.jpg)
 
+### 工作經驗 (Work Experience):
+![Work.png](ResultPhoto/0510/Work.jpg)
+
 ### 專案 (Project):
 專案頁面
-
+![Project.png](ResultPhoto/0510/Project.jpg)
 新增、修改專案 (Create) 功能視窗
 ![Update_Project.png](ResultPhoto/0509/Update_Project.jpg)
 刪除專案 (Delete) 功能視窗
 ![Delete_Project.png](ResultPhoto/0509/Delete_Project.jpg)
----
 
+### 證照&獎項 (Award):
+![Award.png](ResultPhoto/0510/Award.jpg)
+
+### 證照&獎項 (Other):
+![Other.png](ResultPhoto/0510/Other.jpg)
+---
 
 ## 專案結構
 
@@ -425,3 +437,12 @@ npm install react-router-dom@6
 
 #### 2. 新增首頁專案部分
 ![Homepage_Project.png](ResultPhoto/0509/Homepage_Project.jpg.jpg)
+
+### 2025/05/10
+#### 1. 完成工作經驗頁面
+
+#### 2. 完成證照與獎項頁面
+
+#### 3. 完成其他頁面
+
+#### 4. 主要完成
