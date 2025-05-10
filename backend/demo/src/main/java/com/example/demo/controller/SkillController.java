@@ -3,6 +3,10 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Skill;
 import com.example.demo.service.SkillService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +24,13 @@ public class SkillController {
     }
 
     @GetMapping
+    @Operation(
+    summary = "Get all skills",
+    responses = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved users")
+    }
+)
+
     public List<Skill> getAll() {
         return svc.listAll();
     }
