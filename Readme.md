@@ -19,7 +19,18 @@
 ---
 
 ## 使用方式
+### 前置需求
+- Docker (v20+)
+- Docker Compose
 
+### 操作步驟
+1. #git clone https://github.com/monarch0406/Personal_Website.git
+2. #cd Personal_Website
+3. #docker-compose up --build
+4. 至瀏覽器查詢 http://localhost:3000/
+
+
+## 本地端使用
 1. **啟動全部服務**
 
    ```bash
@@ -50,6 +61,8 @@
 
 - **前端**：React、Vite、Tailwind CSS
 - **後端**：Java 17、Spring Boot
+- **資料庫** : Postgre SQL
+- **其他** : Docker (容器化)、Git (推送至Github)、Postman (測試API)
 
 ### 使用版本
 
@@ -446,3 +459,7 @@ npm install react-router-dom@6
 #### 3. 完成其他頁面
 
 #### 4. 主要完成
+
+### 2025/05/17
+#### 1. 加入Docker
+在 Frontend、Backend、全域加入 DockerFile
