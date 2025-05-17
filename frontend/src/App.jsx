@@ -4,9 +4,9 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Home   from './pages/Home';
 import Skill from './pages/Skill';
-import Introduction from './pages/introduction';
+import Introduction from './pages/Introduction';
 import Experience from './pages/Experience';
-import Project from './pages/project';
+import Project from './pages/Project';
 import Award from './pages/Award';
 import Other from './pages/Other';
 

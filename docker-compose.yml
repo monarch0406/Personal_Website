@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: ./backend/demo    # ← 指到你的 Spring Boot 專案資料夾
+      dockerfile: Dockerfile     # ← 這裡就會自動找 ./backend/demo/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/websitedb
+      SPRING_DATASOURCE_USERNAME: website
+      SPRING_DATASOURCE_PASSWORD: website
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend        # ← 指到你的 Vite 專案資料夾
+      dockerfile: Dockerfile     # ← 這裡就會找 ./frontend/Dockerfile
+    ports:
+      - "3000:80"
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: websitedb
+      POSTGRES_USER: website
+      POSTGRES_PASSWORD: website
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
